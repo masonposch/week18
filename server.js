@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({
 app.use(static.express('public'));
 
 //Database configuration with Mongoose
-mongoose.connect("LOCAL PATH TO MONGO SCHEMA");
+mongoose.connect("mongodb://localhost/week18");
 var db = mongoose.connection;
 
 //Show any mongoose errors
