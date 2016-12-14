@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({
 }));
 
 //Make public a static directory
-app.use(static.express('public'));
+app.use(express.static('public'));
 
 //Database configuration with Mongoose
 mongoose.connect("mongodb://localhost/week18");
@@ -57,9 +57,45 @@ db.once('open', function(req, res) {
 //ROUTES
 //===========
 
+app.get('/', function(req, res){
+	res.send(index.html);
+})
 
 
+app.get('/scrape', function(req, res){
 
+	request('http://www.cnn.com/', function(error, response, html){
+
+		var $ = cheerio.load(html);
+
+		$('.cd__headline-text').each(function(i, element) {
+
+			var result = {};
+
+			result.title = $(this).children("a").text();
+      		result.link = $(this).parent("a").attr("href");
+
+      		var story = new News(result);
+
+      		// Now, save that entry to the db
+      		story.save(function(err, doc) {
+        		// Log any errors
+		        if (err) {
+		          console.log(err);
+		        }
+		        // Or log the doc
+		        else {
+		          console.log(doc);
+		        }
+      		});
+
+		});	
+
+	})
+
+	res.send("Scrape Complete");
+
+})
 
 
 
