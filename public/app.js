@@ -3,7 +3,7 @@ $.getJSON("/news", function(data) {
   // For each one
   for (var i = 0; i < data.length; i++) {
     // Display the apropos information on the page
-    $("#news").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+    $("#news").append("<p data-id='" + data[i]._id + "'>" + "<strong>" + data[i].title + "</strong>" + "<br />" + "<a href='" + data[i].link + "' target='_blank'>Read more here</a>" + "<div><textarea id='bodyinput' name='body'></textarea><div><button data-id='" + data._id + "' id='savecomment'>Save Comment</button></div><div>");
   }
 });
 
@@ -28,13 +28,13 @@ $(document).on('click', 'p', function(){
 
 		console.log(data)
 
-		$("#comments").append("<h2>" + data.title + "</h2>");
+		$("#comment").append("<h2>" + data.title + "</h2>");
 	    // An input to enter a new title
-	    $("#comments").append("<input id='titleinput' name='title' >");
+	    $("#comment").append("<input id='titleinput' name='title' >");
 	    // A textarea to add a new note body
-	    $("#comments").append("<textarea id='bodyinput' name='body'></textarea>");
+	    $("#comment").append("<textarea id='bodyinput' name='body'></textarea>");
 	    // A button to submit a new note, with the id of the article saved to it
-	    $("#comments").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+	    $("#comment").append("<button data-id='" + data._id + "' id='savecomment'>Save Note</button>");
 
 
 	    if(data.comment){
@@ -69,7 +69,7 @@ $(document).on('click', '#savecomment', function(){
 
 		console.log(data);
 
-		$('#comments').empty();
+		$('#comment').empty();
 
 	});
 
