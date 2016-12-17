@@ -6,7 +6,9 @@ var mongoose = require("mongoose");
 
 
 // Requiring our Note and Article models
-
+// Requiring our Note and Article models
+var Comment = require("./models/Comment.js");
+var News = require("./models/News.js");
 
 // Our scraping tools
 var request = require("request");
@@ -64,21 +66,21 @@ app.get('/', function(req, res){
 
 app.get('/scrape', function(req, res){
 
-	request('http://www.cnn.com/', function(error, response, html){
+	request('http://www.npr.org/sections/news/', function(error, response, html){
 
 		var $ = cheerio.load(html);
 
-		$('.cd__headline-text').each(function(i, element) {
+		$('.title').each(function(i, element) {
 
 			var result = {};
 
-			result.title = $(this).children("a").text();
-      		result.link = $(this).parent("a").attr("href");
+			result.title = $(this).text();
+    		result.link = $(this).children("a").attr("href");
 
-      		var story = new News(result);
+      		var entry = new News(result);
 
       		// Now, save that entry to the db
-      		story.save(function(err, doc) {
+      		entry.save(function(err, doc) {
         		// Log any errors
 		        if (err) {
 		          console.log(err);
@@ -97,6 +99,70 @@ app.get('/scrape', function(req, res){
 
 })
 
+//Get the new scraped from mongoDB
+app.get('/news', function(req, res){
+
+	News.find({}, function(error, doc){
+
+		if(error){
+			console.log(error);
+		} else {
+			res.json(doc);
+		}
+
+	});
+
+});
+
+
+//Grab News by its objectId
+app.get('news/:id', function(req, res){
+
+	New.findOne({ "_id" : req.params.id })
+
+	.populate('comment')
+
+	.exec(function(error, doc){
+
+		if(error){
+			console.log(error);
+		} else {
+			res.json(doc);
+		}
+
+	});
+
+});
+
+
+//Create new comment or replace existing comment
+app.post('/news/:id', function(req, res){
+
+	var newComment = new Comment(req.body);
+
+	newComment.save(function(error, doc){
+
+		if(error){
+			console.log(error);
+		} else {
+
+			News.findOneAndUpdate({ "_id": req.params.id }, { "comment": doc._id })
+
+			.exec(function(error, doc){
+
+				if(error){
+					console.log(error);
+				} else {
+					res.send(doc);
+				}
+
+			});
+
+		}
+
+	});
+
+});
 
 
 

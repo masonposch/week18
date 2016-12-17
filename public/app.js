@@ -10,9 +10,9 @@ $.getJSON("/news", function(data) {
 
 
 
-$(document).on('click', 'p' function(){
+$(document).on('click', 'p', function(){
 
-	$('comments').empty();
+	$('#comment').empty();
 
 	var thisId =$(this).attr('data-id');
 
@@ -60,8 +60,8 @@ $(document).on('click', '#savecomment', function(){
 		method: 'POST',
 		url: '/news/' + thisId,
 		data: {
-			title: $('#titleinput').val();
-			body: $('#bodyinput').val();
+			title: $('#titleinput').val(),
+			body: $('#bodyinput').val()
 		}
 	})
 
@@ -76,7 +76,7 @@ $(document).on('click', '#savecomment', function(){
 	$('#titleinput').val("");
 	$('#bodyinput').val("");
 
-})
+});
 
 
 
