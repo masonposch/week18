@@ -29,7 +29,6 @@ $(document).on('click', '#savecomment', function(){
 		console.log(data);
 
 		$('#comment').empty();
-		$('form').prepend('thisId');
 
 	});
 
