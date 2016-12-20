@@ -23,7 +23,7 @@ mongoose.Promise = Promise;
 var app = express();
 
 
-
+var port = process.env.PORT || 3000;
 
 
 //ESSENTIALS
@@ -62,6 +62,17 @@ db.once('open', function(req, res) {
 app.get('/', function(req, res){
 	res.send(index.html);
 })
+
+app.post('/', function(req,res){
+var comment = new Int(req.body.comment);
+    comment.save(function(err){
+        if(err){
+            return handleError(err);
+        } else {
+            console.log('your form has been saved');
+        }
+    })
+});
 
 
 app.get('/scrape', function(req, res){
