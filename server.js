@@ -118,7 +118,7 @@ app.get('/news', function(req, res){
 //Grab News by its objectId
 app.get('news/:id', function(req, res){
 
-	New.findOne({ "_id" : req.params.id })
+	News.findOne({ "_id" : req.params.id })
 
 	.populate('comment')
 

@@ -2,8 +2,23 @@ body {
 	background-color: #eeeeee;
 }
 
-button {
-	margin: 0 0 50px 0;
+#savecomment {
+	margin: 5px 0 50px 0;
+	padding: 10px 45px;
+	background-color: cornflowerblue;
+	color: #fff;
+	border-style: none;
+	border-radius: 5px;
+	font-weight: 300;
+}
+
+#savecomment:hover {
+	background-color: #fff;
+	color: gray;
 }
 
 
+#bodyinput {
+	width: 50%;
+	height: 50px;
+}
