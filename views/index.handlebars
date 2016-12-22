@@ -1,48 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>The News</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="./assets/style.css">
-</head>
 
-<body>
+<div class="container">
 
-<div class = 'container'>
-	
-	<div class='jumbotron'>
-		
-		<h1 class="text-center"> Get Your News Here</h1>
-	
-	</div>
+<div class="jumbotron">
+  <h4 class="text-center">Get Your News Here</h4>
+</div>
 
-	<div class="story col-xs-12">
-		
-		<h4 id="news"><div class="form-group">
-  <label for="comment">Comment:</label>
-  <textarea class="form-control" rows="5" id="comment"></textarea>
-</div></h4>
+<div id="news"></div>
+  <div id="sideComments">
+    <div id="comment"></div>
+      <div id="commentResults"></div>
+  </div>
+</div>
 
-	</div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
 
-	<span>
-
-		<div id='comment' class='col-xs-12 col-sm-6'></div>
-
-		<div id='textbox' class='col-xs-12 col-sm-6'></div>
-
-	</span>
-
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+      <h2 id="photoTitleM">Leave a Comment</h2>
+    </div>
+    <div class="modal-body">
+      <input type="text" name="comment" id="commentBox"><br />
+      <input type="submit" name="Submit" id="savecomment">
+    </div>
+    <!-- <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div> -->
+  </div>
 
 </div>
 
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"> </script>
 
+<script src="../app.js"></script>
 
-
-
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src="app.js"></script>
-
-</body>
-</html>
+</div>

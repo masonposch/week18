@@ -1,6 +1,6 @@
 //Require mongoose
 var mongoose = require('mongoose');
-
+var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 
 
@@ -22,6 +22,8 @@ var NewsSchema = new Schema({
 	}
 
 });
+
+NewsSchema.plugin(uniqueValidator);
 
 //Create the News model with the NewsSchema
 var News = mongoose.model("News", NewsSchema);

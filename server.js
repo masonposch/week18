@@ -13,6 +13,8 @@ var News = require("./models/News.js");
 // Our scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
+var exphbs = require('express-handlebars');
+var Nodemon = require("nodemon"); 
 // Mongoose mpromise deprecated - use bluebird promises
 var Promise = require("bluebird");
 
@@ -26,7 +28,9 @@ var port = process.env.PORT || 3000;
 
 
 
-
+// Use handlebars
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 
 //ESSENTIALS
 //=============
@@ -62,11 +66,11 @@ db.once('open', function(req, res) {
 //===========
 
 app.get('/', function(req, res){
-	res.send(index.html);
+	res.redirect('/index');
 })
 
 
-app.get('/scrape', function(req, res){
+app.get('/index', function(req, res){
 
 	request('http://www.npr.org/sections/news/', function(error, response, html){
 
@@ -97,7 +101,8 @@ app.get('/scrape', function(req, res){
 
 	})
 
-	res.send("Scrape Complete");
+	// res.send("Scrape Complete");
+	res.render('index');
 
 })
 
@@ -139,36 +144,64 @@ app.get('news/:id', function(req, res){
 });
 
 
-//Create new comment or replace existing comment
+
+
+
+//Begin the route to delete notes
+app.delete('/deletecomment/:id', function(req, res){
+  console.log(req.params.id);
+
+  Comment.remove({ '_id': req.params.id })
+
+  .exec(function (err, doc){
+    if(error){
+      console.log(error)
+    } else {
+      res.json(doc);
+    }
+  });
+});
+
+
+// Route to replace existing note of article with new one
 app.post('/news/:id', function(req, res){
+  var newComment = new Comment(req.body);
 
-	var newComment = new Comment(req.body);
+  newComment.save(function(err, doc){
+    if(err){
+      console.log(err);
+    } else {
+      News.findOneAndUpdate({ '_id': req.params.id },{$push: {'comment':doc._id}}, {new: true})
 
-	newComment.save(function(error, doc){
-
-		if(error){
-			console.log(error);
-		}
-
-	});
-
+      .exec(function(err, doc){
+        if(err){
+          console.log(err);
+        } else {
+          res.send(doc);
+        }
+      });
+    }
+  });
 });
 
 
-//Get the new scraped from mongoDB
-app.get('/comments', function(req, res){
+// //Create new comment or replace existing comment
+// app.post('/news/:id', function(req, res){
 
-	Comments.find({}, function(error, doc){
+// 	var newComment = new Comment(req.body);
 
-		if(error){
-			console.log(error);
-		} else {
-			res.json(doc);
-		}
+// 	newComment.save(function(error, doc){
 
-	});
+// 		if(error){
+// 			console.log(error);
+// 		}
 
-});
+// 	});
+
+// });
+
+
+
 
 
 
